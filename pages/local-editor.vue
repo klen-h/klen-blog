@@ -490,18 +490,18 @@
     }
 
     try {
-      const articles = await $fetch('/api/posts')
+      const articles = await $fetch('/api/posts.json')
       const existingIndex = articles.findIndex(a => a.slug === article.slug)
       if (existingIndex >= 0) {
         articles[existingIndex] = article
         // 发送整个更新后的数组
-        await $fetch('/api/posts', {
+        await $fetch('/api/posts.json', {
           method: 'POST',
           body: articles  // 发送数组，触发全量覆盖
         })
       } else {
         // 发送单个对象，触发追加
-        await $fetch('/api/posts', {
+        await $fetch('/api/posts.json', {
           method: 'POST',
           body: article
         })
@@ -538,7 +538,7 @@
       return
     }
     try {
-      const articles = await $fetch('/api/posts')
+      const articles = await $fetch('/api/posts.json')
       if (articles.length === 0) {
         showInfo('暂无保存的文章')
         return
@@ -591,10 +591,10 @@
     }
     if (confirm(`确定要删除文章 ${slug} 吗？`)) {
       try {
-        const articles = await $fetch('/api/posts')
+        const articles = await $fetch('/api/posts.json')
         const filteredArticles = articles.filter(a => a.slug !== slug)
         // 重新写入所有未被删除的文章
-        await $fetch('/api/posts', {
+        await $fetch('/api/posts.json', {
           method: 'POST',
           body: filteredArticles
         })
@@ -608,7 +608,7 @@
   
   const loadLocalArticles = async () => {
     try {
-      const articles = await $fetch('/api/posts')
+      const articles = await $fetch('/api/posts.json')
       localArticles.value = articles
     } catch (error) {
       localArticles.value = []

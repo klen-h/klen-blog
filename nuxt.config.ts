@@ -55,8 +55,7 @@ export default defineNuxtConfig({
         '/blog',
         '/about',
         '/preview',
-        '/local-editor',
-        '/api/posts.json'  // 包含静态API文件
+        '/local-editor'
       ]
     }
   }

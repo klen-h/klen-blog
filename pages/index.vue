@@ -91,7 +91,7 @@ const verifyError = ref('')
 // 从API加载文章
 const loadPosts = async () => {
   try {
-    posts.value = await $fetch('/api/posts')
+    posts.value = await $fetch('/api/posts.json')
     posts.value = posts.value.slice(0,6)
   } catch (error) {
     posts.value = []

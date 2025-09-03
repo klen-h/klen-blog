@@ -112,7 +112,7 @@ const renderedContent = computed(() => {
 // 从API加载文章详情
 const loadPost = async () => {
   try {
-    const articles = await $fetch('/api/posts')
+    const articles = await $fetch('/api/posts.json')
     const foundPost = articles.find(article => article.slug === postSlug)
     if (foundPost) {
       post.value = foundPost
@@ -178,7 +178,7 @@ onMounted(async () => {
   await loadPost()
   // 加载所有文章用于相关文章推荐
   try {
-    allPosts.value = await $fetch('/api/posts')
+          allPosts.value = await $fetch('/api/posts.json')
   } catch (error) {
     allPosts.value = []
   }

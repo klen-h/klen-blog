@@ -89,7 +89,7 @@ const pending = ref(false)
 // 从API加载文章
 const loadPosts = async () => {
   try {
-    posts.value = await $fetch('/api/posts')
+    posts.value = await $fetch('/api/posts.json')
   } catch (error) {
     posts.value = []
   }
