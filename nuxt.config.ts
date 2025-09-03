@@ -17,6 +17,9 @@ export default defineNuxtConfig({
       'Poppins': [300, 400, 500, 600, 700]
     }
   },
+  experimental: {
+    payloadExtraction: false
+  },
   app: {
     // 改为你的 GitHub 仓库名
     baseURL: '/klen-blog/',  // 或者你实际使用的仓库名
