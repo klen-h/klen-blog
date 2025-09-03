@@ -18,8 +18,8 @@ export default defineNuxtConfig({
     }
   },
   app: {
-    // 将仓库名替换为你的实际仓库名
-    baseURL: '/klen-blog/',
+    // 改为你的 GitHub 仓库名
+    baseURL: '/klen-blog/',  // 或者你实际使用的仓库名
     head: {
       title: '我的个人博客',
       meta: [
