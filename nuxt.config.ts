@@ -46,26 +46,14 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: true,
-      routes: (() => {
-        const fs = require('node:fs')
-        const path = require('node:path')
-        const file = path.join(process.cwd(), 'data', 'posts.json')
-        let posts = []
-        try {
-          posts = JSON.parse(fs.readFileSync(file, 'utf-8')) || []
-        } catch {}
-        const detailRoutes = posts
-          .filter(p => p && (p.slug || p.id))
-          .map(p => `/blog/${p.slug || p.id}`)
-        return [
-          '/',
-          '/blog',
-          '/about',
-          '/preview',
-          '/api/posts',
-          ...detailRoutes
-        ]
-      })()
+      routes: [
+        '/blog',
+        '/about',
+        '/preview',
+        '/api/posts',
+        // 暂时跳过根路径
+        // '/',
+      ]
     }
   }
 })
