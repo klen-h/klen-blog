@@ -1,0 +1,26 @@
+{
+  "name": "nuxt-blog",
+  "version": "1.0.0",
+  "description": "A personal blog built with Nuxt3",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/icon": "1.15.0",
+    "@nuxtjs/color-mode": "^3.3.0",
+    "@nuxtjs/tailwindcss": "^6.8.0",
+    "nuxt": "^3.8.0"
+  },
+  "dependencies": {
+    "@nuxtjs/google-fonts": "^3.0.2",
+    "@types/node": "^24.2.0",
+    "lucide-vue-next": "^0.294.0",
+    "marked": "^16.1.2"
+  }
+}
