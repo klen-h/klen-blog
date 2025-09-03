@@ -1,8 +1,9 @@
-name: Deploy to GitHub Pages
+# Sample workflow for building and deploying a Nuxt site to GitHub Pages
+name: Deploy Nuxt site to Pages
 
 on:
   push:
-    branches: [ master ]  # 改为 master
+    branches: ["master"]
   workflow_dispatch:
 
 permissions:
@@ -21,25 +22,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "20"
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
       
       - name: Install dependencies
-        run: npm ci
-      
-      - name: Build
-        run: npm run generate
+        run: pnpm install --frozen-lockfile
       
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: nuxt
+      
+      - name: Static HTML export with Nuxt
+        run: pnpm run generate
+      
+      - name: Create .nojekyll file
+        run: touch ./.output/public/.nojekyll
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./.output/public  # 包含所有文件，包括 _nuxt 和 _payload.json
+          path: ./.output/public
 
   deploy:
     environment:
