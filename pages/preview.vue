@@ -141,7 +141,8 @@ const formatDate = (dateString) => {
 }
 
 const closePreview = () => {
-  window.close()
+  // 返回上一页，而不是关闭窗口
+  useRouter().back()
 }
 
 const copyArticleLink = () => {

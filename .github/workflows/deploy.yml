@@ -1,98 +1,98 @@
-name: Deploy to GitHub Pages
+# name: Deploy to GitHub Pages
 
-on:
-  push:
-    branches: [ master ]
-  workflow_dispatch:
+# on:
+#   push:
+#     branches: [ master ]
+#   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+# concurrency:
+#   group: "pages"
+#   cancel-in-progress: false
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
     
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: '18'
         
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 8
+#     - name: Setup pnpm
+#       uses: pnpm/action-setup@v2
+#       with:
+#         version: 8
         
-    - name: Get pnpm store directory
-      shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+#     - name: Get pnpm store directory
+#       shell: bash
+#       run: |
+#         echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
         
-    - name: Setup pnpm cache
-      uses: actions/cache@v3
-      with:
-        path: ${{ env.STORE_PATH }}
-        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-store-
+#     - name: Setup pnpm cache
+#       uses: actions/cache@v3
+#       with:
+#         path: ${{ env.STORE_PATH }}
+#         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+#         restore-keys: |
+#           ${{ runner.os }}-pnpm-store-
         
-    - name: Install dependencies
-      run: pnpm install
+#     - name: Install dependencies
+#       run: pnpm install
         
-    - name: Verify data file
-      run: |
-        echo "📁 检查数据文件..."
-        if [ -f "data/posts.json" ]; then
-          echo "✅ posts.json 文件存在"
-          echo "📊 文章数量: $(jq length data/posts.json)"
-        else
-          echo "❌ posts.json 文件不存在"
-          exit 1
-        fi
+#     - name: Verify data file
+#       run: |
+#         echo "📁 检查数据文件..."
+#         if [ -f "data/posts.json" ]; then
+#           echo "✅ posts.json 文件存在"
+#           echo "📊 文章数量: $(jq length data/posts.json)"
+#         else
+#           echo "❌ posts.json 文件不存在"
+#           exit 1
+#         fi
         
-    - name: Build static site
-      run: pnpm run generate
+#     - name: Build static site
+#       run: pnpm run generate
         
-    - name: Verify build output
-      run: |
-        echo "📁 检查构建输出..."
-        if [ -d ".output/public" ]; then
-          echo "✅ 构建输出目录存在"
-          echo "📊 文件数量: $(find .output/public -type f | wc -l)"
-          echo "📁 API 文件: $(ls -la .output/public/api/ || echo 'API目录不存在')"
-        else
-          echo "❌ 构建输出目录不存在"
-          exit 1
-        fi
+#     - name: Verify build output
+#       run: |
+#         echo "📁 检查构建输出..."
+#         if [ -d ".output/public" ]; then
+#           echo "✅ 构建输出目录存在"
+#           echo "📊 文件数量: $(find .output/public -type f | wc -l)"
+#           echo "📁 API 文件: $(ls -la .output/public/api/ || echo 'API目录不存在')"
+#         else
+#           echo "❌ 构建输出目录不存在"
+#           exit 1
+#         fi
         
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: .output/public
+#     - name: Upload artifact
+#       uses: actions/upload-pages-artifact@v3
+#       with:
+#         path: .output/public
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
+#   deploy:
+#     environment:
+#       name: github-pages
+#       url: ${{ steps.deployment.outputs.page_url }}
+#     runs-on: ubuntu-latest
+#     needs: build
     
-    steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+#     steps:
+#     - name: Deploy to GitHub Pages
+#       id: deployment
+#       uses: actions/deploy-pages@v4
       
-    - name: Verify deployment
-      run: |
-        echo "🚀 部署完成！"
-        echo "🌐 网站地址: ${{ steps.deployment.outputs.page_url }}"
-        echo "📊 构建状态: ${{ job.status }}"
+#     - name: Verify deployment
+#       run: |
+#         echo "🚀 部署完成！"
+#         echo "🌐 网站地址: ${{ steps.deployment.outputs.page_url }}"
+#         echo "📊 构建状态: ${{ job.status }}"

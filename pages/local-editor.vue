@@ -519,7 +519,7 @@
       return
     }
     
-    // 在新窗口打开预览
+    // 准备预览数据并跳转到预览页面
     const previewData = {
       title: articleTitle.value,
       content: markdownContent.value,
@@ -529,7 +529,9 @@
     }
     
     localStorage.setItem('previewArticle', JSON.stringify(previewData))
-    window.open('/preview', '_blank')
+    
+    // 使用Nuxt路由跳转
+    navigateTo('/preview')
   }
   
   const loadArticle = async () => {
