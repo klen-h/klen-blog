@@ -8,7 +8,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "build:static": "nuxt generate",
+    "build:check": "nuxt build --dry-run"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",

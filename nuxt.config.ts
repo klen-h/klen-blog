@@ -45,31 +45,19 @@ export default defineNuxtConfig({
       '~/components/blog'
     ]
   },
-  // 预渲染纯静态（包含 /api/posts 与动态文章路由）
+  // 静态部署配置
   nitro: {
     preset: 'static',
     prerender: {
-      crawlLinks: true,
-      routes: (() => {
-        const fs = require('node:fs')
-        const path = require('node:path')
-        const file = path.join(process.cwd(), 'data', 'posts.json')
-        let posts = []
-        try {
-          posts = JSON.parse(fs.readFileSync(file, 'utf-8')) || []
-        } catch {}
-        const detailRoutes = posts
-          .filter(p => p && (p.slug || p.id))
-          .map(p => `/blog/${p.slug || p.id}`)
-        return [
-          '/',
+      crawlLinks: false,  // 禁用自动爬取，手动指定路由
+      routes: [
+        '/',
         '/blog',
         '/about',
         '/preview',
-        '/api/posts',
-          ...detailRoutes
+        '/local-editor',
+        '/api/posts.json'  // 包含静态API文件
       ]
-      })()
     }
   }
 })
