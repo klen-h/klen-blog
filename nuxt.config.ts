@@ -20,6 +20,7 @@ export default defineNuxtConfig({
   app: {
     // 改为你的 GitHub 仓库名
     baseURL: '/klen-blog/',  // 或者你实际使用的仓库名
+    buildAssetsDir: 'nuxt_assets',
     head: {
       title: '我的个人博客',
       meta: [
@@ -46,14 +47,26 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: true,
-      routes: [
+      routes: (() => {
+        const fs = require('node:fs')
+        const path = require('node:path')
+        const file = path.join(process.cwd(), 'data', 'posts.json')
+        let posts = []
+        try {
+          posts = JSON.parse(fs.readFileSync(file, 'utf-8')) || []
+        } catch {}
+        const detailRoutes = posts
+          .filter(p => p && (p.slug || p.id))
+          .map(p => `/blog/${p.slug || p.id}`)
+        return [
+          '/',
         '/blog',
         '/about',
         '/preview',
         '/api/posts',
-        // 暂时跳过根路径
-        // '/',
+          ...detailRoutes
       ]
+      })()
     }
   }
 })
